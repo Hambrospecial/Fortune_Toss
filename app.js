@@ -33,12 +33,12 @@ let rolls = 0;
 
 btn_roll.addEventListener("click", function () {
   dice_img.classList.add("dice_rolling");
-  dice_container.style.left = "385px";
+  dice_container.style.left = "340px";
 
   setTimeout(function () {
     dice_img.classList.remove("dice_rolling");
     let diceRoll = Math.floor(Math.random() * 6 + 1);
-    dice_container.style.left = "360px";
+    dice_container.style.left = "310px";
     dice_img.src = `dices/dice-${diceRoll}.png`;
 
     if (activeplayer) {

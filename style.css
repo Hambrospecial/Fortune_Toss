@@ -46,8 +46,6 @@ h1 {
 }
 
 #container {
-  height: 70vh;
-  max-width: 620px;
   background-color: #ccc;
   display: flex;
   justify-content: space-between;
@@ -57,14 +55,10 @@ h1 {
 
 #left,
 #right {
-  height: 75vh;
-  min-width: 40rem;
+  height: 65vh;
+  min-width: 35rem;
   border-radius: 1rem;
   padding: 2rem;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
   position: relative;
 }
 
@@ -86,13 +80,13 @@ h1 {
 .dice {
   position: absolute;
   top: 150px;
-  left: 360px;
+  left: 320px;
   background-color: #fefefe73;
   border-radius: 10px;
 }
 
 .img {
-  width: 70px;
+  width: 60px;
 }
 
 .btn {
