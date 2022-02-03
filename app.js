@@ -8,11 +8,28 @@ let player_1_score = document.querySelector(".player_1_score").textContent;
 let player_2_score = document.querySelector(".player_2_score").textContent;
 let dice_count_1 = document.querySelector(".dice_count_1");
 let dice_count_2 = document.querySelector(".dice_count_2");
-
-// let each_current_score = current_score.forEach(el => el.textContent);
+const left_container = document.querySelector("#left");
+const right_container = document.querySelector("#right");
 
 let activeplayer = true;
 let times = 0;
+let diceRoll = 0;
+
+function dicing(count) {
+  let dice_img_roll = dice_img.src;
+  if (dice_img_roll != `dices/dice-1.png` && times < 5) {
+    if (count > 0) {
+      count--;
+      document.querySelector(".btn_roll").click();
+    } else {
+      dicing(count);
+    }
+  } else {
+    document.querySelector(".btn_hold").click();
+  }
+}
+
+let rolls = 0;
 
 btn_roll.addEventListener("click", function () {
   dice_img.classList.add("dice_rolling");
@@ -33,29 +50,53 @@ btn_roll.addEventListener("click", function () {
         }
         dice_count_2.style.color = "black";
       } else {
+        rolls = Math.floor(Math.random() * 4 + 2);
         current_score_1 = 0;
         times = -1;
         activeplayer = !activeplayer;
         btn_roll.style.left = "550px";
         btn_hold.style.left = "550px";
         dice_count_1.textContent = 0;
+        left_container.style.backgroundColor = "var(--dark-torquoise)";
+        right_container.style.backgroundColor = "var(--light-torquoise)";
+        setTimeout(() => {
+          document.querySelector(".btn_roll").click();
+        }, 1000);
       }
       document.querySelector(".current_score-0").textContent = current_score_1;
     } else {
-      if (diceRoll > 1 && times < 5) {
+      if (diceRoll > 1 && times < 5 && rolls > 0) {
+        setTimeout(() => {
+          document.querySelector(".btn_roll").click();
+        }, 500);
         current_score_2 = Number(current_score_2) + diceRoll;
         dice_count_2.textContent = times + 1;
+        rolls--;
         if (times == 4) {
           dice_count_2.style.color = "red";
         }
         dice_count_1.style.color = "black";
       } else {
-        current_score_2 = 0;
-        times = -1;
-        activeplayer = !activeplayer;
-        btn_roll.style.left = "150px";
-        btn_hold.style.left = "150px";
-        dice_count_2.textContent = 0;
+        let playerTwo = document.querySelector(".player_2_score").textContent;
+        console.log("times : " + times);
+        document.querySelector(".player_2_score").textContent =
+          Number(playerTwo) + Number(current_score_2);
+
+        if (Number(playerTwo) + Number(current_score_2) >= 100) {
+          document.querySelector(".player_2_score").textContent = 100;
+          btn_hold.disabled = true;
+          btn_roll.disabled = true;
+          console.log("Player 2 wins!");
+        } else {
+          current_score_2 = 0;
+          times = -1;
+          activeplayer = !activeplayer;
+          btn_roll.style.left = "150px";
+          btn_hold.style.left = "150px";
+          dice_count_2.textContent = 0;
+          left_container.style.backgroundColor = "var(--light-torquoise)";
+          right_container.style.backgroundColor = "var(--dark-torquoise)";
+        }
       }
       document.querySelector(".current_score-1").textContent = current_score_2;
     }
@@ -68,10 +109,12 @@ btn_hold.addEventListener("click", function () {
   let playerTwo = document.querySelector(".player_2_score").textContent;
 
   if (activeplayer) {
-    if (playerOne == 100) {
+    if (Number(playerOne) + Number(current_score_1) >= 100) {
+      document.querySelector(".player_1_score").textContent = 100;
+      btn_hold.disabled = true;
+      btn_roll.disabled = true;
       console.log("Player 1 wins");
     } else {
-      //   let playerOne = document.querySelector(".player_1_score").textContent;
       document.querySelector(".player_1_score").textContent =
         Number(playerOne) + Number(current_score_1);
       activeplayer = !activeplayer;
@@ -80,26 +123,15 @@ btn_hold.addEventListener("click", function () {
       setTimeout(function () {
         btn_roll.style.left = "550px";
         btn_hold.style.left = "550px";
+        left_container.style.backgroundColor = "var(--dark-torquoise)";
+        right_container.style.backgroundColor = "var(--light-torquoise)";
         times = 0;
         dice_count_1.textContent = 0;
       }, 400);
-    }
-  } else {
-    if (playerTwo == 100) {
-      console.log("Player 2 wins!");
-    } else {
-      //   let playerTwo = document.querySelector(".player_2_score").textContent;
-      document.querySelector(".player_2_score").textContent =
-        Number(playerTwo) + Number(current_score_2);
-      activeplayer = !activeplayer;
-      document.querySelector(".current_score-1").textContent = 0;
-      current_score_2 = 0;
-      setTimeout(function () {
-        btn_roll.style.left = "150px";
-        btn_hold.style.left = "150px";
-        times = 0;
-        dice_count_2.textContent = 0;
-      }, 400);
+      rolls = Math.floor(Math.random() * 4 + 2);
+      setTimeout(() => {
+        document.querySelector(".btn_roll").click();
+      }, 1000);
     }
   }
 });
